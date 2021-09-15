@@ -5,6 +5,7 @@ import logging from './config/logging';
 import config from './config/config';
 import mongoose from 'mongoose';
 import bookRouter from './routes/book';
+import userRouter from './routes/user';
 
 const NAMESPACE = 'Server'; /* determines where logs are comming from */
 const router = express();
@@ -58,7 +59,8 @@ router.use((req, res, next) => {
 });
 
 /* Routes */
-router.use('/api/books', bookRouter);
+router.use('/books', bookRouter);
+router.use('/users', userRouter);
 
 /* Error handling */
 // middleware
