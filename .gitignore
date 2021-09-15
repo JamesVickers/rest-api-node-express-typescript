@@ -1,0 +1,10 @@
+node_modules/**/*
+build/**/*
+certs/**/*
+package-lock.json
+.cache/
+public
+.env
+.env.development
+.env.production
+.DS_Store
