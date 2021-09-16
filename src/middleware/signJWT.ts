@@ -36,9 +36,17 @@ const signJWT = (user: IUser, callback: (error: Error | null, token: string | nu
             },
             (error, token) => {
                 if (error) {
-                    // got to here
+                    callback(error, null);
+                } else if (token) {
+                    callback(null, token);
                 }
             }
         );
-    } catch (error) {}
+    } catch (error) {
+        logging.error(NAMESPACE, error.message, error);
+        // pass the callback to catch block too, so if we get an error when signing the token
+        callback(error, null);
+    }
 };
+
+export default signJWT;
