@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 import controller from '../controllers/user';
+import extractJWT from '../middleware/extractJWT';
 
 const router: Router = express.Router();
 
@@ -10,7 +11,7 @@ const router: Router = express.Router();
     @fields: no fields
     @access: PUBLIC
 */
-router.get('/validate', controller.validateToken);
+router.get('/validate', extractJWT, controller.validateToken);
 
 /* 
     @usage: Creating a new user and storing them in the DB
@@ -32,11 +33,11 @@ router.post('/login', controller.login);
 
 /* 
     @usage: Return all users in the DB without passwords
-    @url: http://localhost:1337/users/getAllUsers
+    @url: http://localhost:1337/users/get/all
     @method: GET
     @fields: no fields
     @access: PUBLIC
 */
-router.get('/getAllUsers', controller.getAllUsers);
+router.get('/get/all', controller.getAllUsers);
 
 export = router;

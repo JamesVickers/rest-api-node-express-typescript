@@ -43,9 +43,7 @@ const signJWT = (user: IUser, callback: (error: Error | null, token: string | nu
             }
         );
     } catch (error) {
-        logging.error(NAMESPACE, error.message, error);
-        // pass the callback to catch block too, so if we get an error when signing the token
-        callback(error, null);
+        logging.error(NAMESPACE, 'Unable to sign token', error);
     }
 };
 

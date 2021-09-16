@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import config from '../config/config';
 import logging from '../config/logging';
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
 const NAMESPACE = 'Authentication';
 
@@ -10,11 +10,11 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Validating Token');
 
     // split the array by the space and use the second part
-    // a 'bearer token' is passed in which is the word 'bearer' followed by a space, but we want what is after that
-    let token = req.headers.authorization?.split(' '[1]);
+    // a 'Bearer token' is passed in which is the word 'Bearer' followed by a space, but we want what is after that
+    let token = req.headers.authorization?.replace('Bearer ', '');
 
-    if (token && token[0]) {
-        jwt.verify(token[0], config.server.token.secret, (error, decoded) => {
+    if (token) {
+        jwt.verify(token, config.server.token.secret, (error, decoded) => {
             if (error) {
                 return res.status(404).json({
                     message: error.message,
@@ -25,9 +25,10 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
                 res.locals.jwt = decoded;
                 next();
             }
-            return res.status(401).json({
-                message: 'Unauthorized'
-            });
+        });
+    } else {
+        return res.status(401).json({
+            message: 'Unauthorized'
         });
     }
 };

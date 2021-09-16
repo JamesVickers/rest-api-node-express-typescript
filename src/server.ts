@@ -66,7 +66,7 @@ router.use('/users', userRouter);
 // middleware
 // if API route not found
 router.use((req, res, next) => {
-    const error = new Error('not found');
+    const error = new Error('Route not found');
 
     return res.status(404).json({
         message: error.message
