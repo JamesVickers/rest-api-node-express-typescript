@@ -3,8 +3,9 @@ import IBook from '../interfaces/book';
 
 const BookSchema: Schema = new Schema(
     {
-        title: { type: String, required: true },
         author: { type: String, required: true },
+        title: { type: String, required: true },
+        rating: { type: Number, required: true },
         extraInformation: { type: String }
     },
     {

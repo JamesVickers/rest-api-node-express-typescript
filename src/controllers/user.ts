@@ -108,8 +108,8 @@ const getAllUsers = (req: Request, res: Response, next: NextFunction) => {
         .exec()
         .then((users) => {
             return res.status(200).json({
-                users,
-                count: users.length
+                count: users.length,
+                users
             });
         })
         .catch((error) => {

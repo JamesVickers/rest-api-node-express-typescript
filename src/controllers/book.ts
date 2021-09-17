@@ -5,12 +5,13 @@ import Book from '../models/book';
 const NAMESPACE = 'Sample controller';
 
 const createBook = (req: Request, res: Response, next: NextFunction) => {
-    let { author, title } = req.body;
+    let { author, title, rating } = req.body;
 
     const book = new Book({
         _id: new mongoose.Types.ObjectId(),
         author,
-        title
+        title,
+        rating
     });
 
     return book
@@ -35,9 +36,9 @@ const createBook = (req: Request, res: Response, next: NextFunction) => {
 // res.json({ status: 'ok' })
 
 const getBook = (req: Request, res: Response, next: NextFunction) => {
-    let { title, author } = req.body;
+    let { author, title } = req.body;
 
-    Book.findOne({ title, author })
+    Book.findOne({ author, title })
         .exec()
         .then((result) => {
             return res.status(200).json({
@@ -57,8 +58,8 @@ const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
         .exec()
         .then((results) => {
             return res.status(200).json({
-                books: results,
-                count: results.length
+                count: results.length,
+                books: results
             });
         })
         .catch((error) => {
@@ -69,4 +70,23 @@ const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { createBook, getBook, getAllBooks };
+const updateRating = (req: Request, res: Response, next: NextFunction) => {
+    let { author, title, rating } = req.body;
+
+    // Option to set new:true is we want the updated document returned, as by default mongoose returns the old document ad it was before the update
+    Book.findOneAndUpdate({ author, title }, { $set: { rating } }, { new: true })
+        .exec()
+        .then((result) => {
+            return res.status(200).json({
+                book: result
+            });
+        })
+        .catch((error) => {
+            return res.status(500).json({
+                message: error.message,
+                error
+            });
+        });
+};
+
+export default { createBook, getBook, getAllBooks, updateRating };
