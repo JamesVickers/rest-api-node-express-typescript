@@ -10,6 +10,8 @@ const BookSchema: Schema = new Schema(
     {
         // automatically creates a createdAt and updatedAt timestamp and attaches it to the document
         timestamps: true
+        // // can set custom collection name
+        // collection: 'Custom-Books'
     }
 );
 

@@ -28,6 +28,29 @@ const createBook = (req: Request, res: Response, next: NextFunction) => {
             });
         });
 };
+// An alternative to the above would be as follows:
+// const createBook = async (req...
+// const response = await Book.create({ title... })
+// console.log(response)
+// res.json({ status: 'ok' })
+
+const getBook = (req: Request, res: Response, next: NextFunction) => {
+    let { title, author } = req.body;
+
+    Book.findOne({ title, author })
+        .exec()
+        .then((result) => {
+            return res.status(200).json({
+                book: result
+            });
+        })
+        .catch((error) => {
+            return res.status(500).json({
+                message: error.message,
+                error
+            });
+        });
+};
 
 const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
     Book.find()
@@ -46,4 +69,4 @@ const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { getAllBooks, createBook };
+export default { createBook, getBook, getAllBooks };
