@@ -74,7 +74,7 @@ const updateRating = (req: Request, res: Response, next: NextFunction) => {
     let { id, rating } = req.body;
 
     // Option to set new:true is we want the updated document returned, as by default mongoose returns the old document ad it was before the update
-    Book.findOneAndUpdate({ _id: id }, { $set: { rating } }, { new: true })
+    Book.findByIdAndUpdate({ _id: id }, { $set: { rating } }, { new: true })
         .exec()
         .then((result) => {
             return res.status(200).json({
@@ -89,4 +89,22 @@ const updateRating = (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { createBook, getBook, getAllBooks, updateRating };
+const deleteBook = (req: Request, res: Response, next: NextFunction) => {
+    let { id } = req.body;
+
+    Book.findByIdAndDelete({ _id: id })
+        .exec()
+        .then((result) => {
+            return res.status(200).json({
+                book: result
+            });
+        })
+        .catch((error) => {
+            return res.status(500).json({
+                message: error.message,
+                error
+            });
+        });
+};
+
+export default { createBook, getBook, getAllBooks, updateRating, deleteBook };

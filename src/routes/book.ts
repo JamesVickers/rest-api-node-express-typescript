@@ -31,12 +31,21 @@ router.get('/get/all', controller.getAllBooks);
 router.post('/create/book', controller.createBook);
 
 /* 
-    @usage: create a book
+    @usage: update a book
     @url: http://localhost:1337/books/update/rating
-    @method: POST
-    @fields: author, title, rating
+    @method: PUT
+    @fields: id, rating
     @access: PUBLIC
 */
-router.post('/update/rating', controller.updateRating);
+router.put('/update/rating', controller.updateRating);
+
+/* 
+    @usage: delete a book
+    @url: http://localhost:1337/books/delete/book
+    @method: POST
+    @fields: id
+    @access: PUBLIC
+*/
+router.post('/delete/book', controller.deleteBook);
 
 export = router;
