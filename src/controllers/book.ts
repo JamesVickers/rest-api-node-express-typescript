@@ -71,10 +71,10 @@ const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const updateRating = (req: Request, res: Response, next: NextFunction) => {
-    let { author, title, rating } = req.body;
+    let { id, rating } = req.body;
 
     // Option to set new:true is we want the updated document returned, as by default mongoose returns the old document ad it was before the update
-    Book.findOneAndUpdate({ author, title }, { $set: { rating } }, { new: true })
+    Book.findOneAndUpdate({ _id: id }, { $set: { rating } }, { new: true })
         .exec()
         .then((result) => {
             return res.status(200).json({
